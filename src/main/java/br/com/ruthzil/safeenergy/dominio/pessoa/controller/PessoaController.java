@@ -1,7 +1,6 @@
 package br.com.ruthzil.safeenergy.dominio.pessoa.controller;
 
 import br.com.ruthzil.safeenergy.dominio.pessoa.entity.Pessoa;
-import br.com.ruthzil.safeenergy.dominio.pessoa.repository.PessoaCollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
