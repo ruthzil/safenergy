@@ -1,11 +1,11 @@
 package br.com.ruthzil.safeenergy.dominio.endereco.dto;
 
+import br.com.ruthzil.safeenergy.dominio.endereco.entity.Endereco;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record EnderecoDTO(
-
         Long id,
         @NotBlank(message = "A rua não pode estar em branco")
         String rua,
@@ -20,4 +20,29 @@ public record EnderecoDTO(
 
 
 ) {
+        public static Endereco toEntity(EnderecoDTO dto) {
+                return new Endereco(dto);
+        }
+
+        public static EnderecoDTO fromEntity(Endereco endereco) {
+                return  new EnderecoDTO(
+                        endereco.getId(),
+                        endereco.getRua(),
+                        endereco.getCidade(),
+                        endereco.getEstado(),
+                        endereco.getCep()
+                );
+        }
+
+        public static Endereco mapperDtoToEntity(
+                EnderecoDTO dto,
+                Endereco entity) {
+                entity.setRua(dto.rua());
+                entity.setCidade(dto.cidade());
+                entity.setEstado(dto.estado());
+                entity.setCep(dto.cep());
+                return entity;
+        }
+
+
 }

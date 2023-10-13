@@ -1,5 +1,7 @@
 package br.com.ruthzil.safeenergy.dominio.endereco.entity;
 
+import br.com.ruthzil.safeenergy.dominio.endereco.dto.EnderecoDTO;
+import br.com.ruthzil.safeenergy.dominio.endereco.dto.EnderecoPessoaDTO;
 import br.com.ruthzil.safeenergy.dominio.pessoa.entity.Pessoa;
 import jakarta.persistence.*;
 
@@ -9,58 +11,62 @@ public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-    private String endereco;
-    private int numero;
-    private String bairro;
+    private Long id;
+    private String rua;
     private String cidade;
     private String estado;
+    private String cep;
 
     @ManyToOne
     @JoinColumn(name = "pessoa_id", nullable = false)
     private Pessoa pessoa;
-    public Endereco() {
 
-    }
-    public Endereco(Long id, String endereco, int numero, String bairro, String cidade, String estado) {
-        Id = id;
-        this.endereco = endereco;
-        this.numero = numero;
-        this.bairro = bairro;
+    public Endereco() {}
+
+    public Endereco(
+            Long id,
+            String rua,
+            String cidade,
+            String estado,
+            String cep) {
+        this.id = id;
+        this.rua = rua;
         this.cidade = cidade;
         this.estado = estado;
+        this.cep = cep;
     }
-    
+
+    public Endereco(EnderecoDTO dto) {
+        this.id = dto.id();
+        this.rua = dto.rua();
+        this.cidade = dto.cidade();
+        this.estado = dto.estado();
+        this.cep = dto.cep();
+    }
+
+    public Endereco(EnderecoPessoaDTO dto, Pessoa pessoa) {
+        this.id = dto.id();
+        this.rua = dto.rua();
+        this.cidade = dto.cidade();
+        this.estado = dto.estado();
+        this.cep = dto.cep();
+        this.pessoa = pessoa;
+    }
+
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
-    public String getEndereco() {
-        return endereco;
+    public String getRua() {
+        return rua;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public String getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
+    public void setRua(String rua) {
+        this.rua = rua;
     }
 
     public String getCidade() {
@@ -77,5 +83,21 @@ public class Endereco {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }

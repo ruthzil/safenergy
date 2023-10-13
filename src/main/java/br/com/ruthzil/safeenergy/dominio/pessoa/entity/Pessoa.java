@@ -1,83 +1,141 @@
 package br.com.ruthzil.safeenergy.dominio.pessoa.entity;
 
 import br.com.ruthzil.safeenergy.dominio.endereco.entity.Endereco;
-import jakarta.persistence.OneToMany;
+import br.com.ruthzil.safeenergy.dominio.pessoa.dto.PessoaDTO;
+import br.com.ruthzil.safeenergy.dominio.pessoa.dto.PessoaUsuarioDTO;
+import br.com.ruthzil.safeenergy.dominio.usuario.entitie.Usuario;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Table(name = "tb_pessoa")
+@Entity
 public class Pessoa {
 
-    private Long Id;
-    private String nome;
-    private String sobrenome;
-    private LocalDate dtNascimento;
-    private String sexo;
-    private String parentesco;
-    public Pessoa(){
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    private String nome;
+
+    private LocalDate nascimento;
+
+    private String cpf;
+
+    private String email;
+
+    @OneToMany(mappedBy = "pessoa")
+    private Set<Endereco> enderecos = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    public Pessoa() {
     }
 
-    public Pessoa(Long id, String nome, String sobrenome, LocalDate dtNascimento, String sexo, String parentesco, Set<Endereco> enderecos) {
-        Id = id;
+    public Pessoa(Long id, String nome, LocalDate nascimento, String cpf, String email) {
+        this.id = id;
         this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.dtNascimento = dtNascimento;
-        this.sexo = sexo;
-        this.parentesco = parentesco;
-        this.enderecos = enderecos;
+        this.nascimento = nascimento;
+        this.cpf = cpf;
+        this.email = email;
+    }
+
+    public Pessoa(PessoaDTO dto) {
+        this.id = dto.id();
+        this.nome = dto.nome();
+        this.nascimento = dto.nascimento();
+        this.cpf = dto.cpf();
+        this.email = dto.email();
+    }
+
+    public Pessoa(PessoaUsuarioDTO dto, Usuario usuario) {
+        this.id = dto.id();
+        this.nome = dto.nome();
+        this.nascimento = dto.nascimento();
+        this.cpf = dto.cpf();
+        this.email = dto.email();
+        this.usuario = usuario;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public Pessoa setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public Pessoa setNome(String nome) {
         this.nome = nome;
+        return this;
     }
 
-    public String getSobrenome() {
-        return sobrenome;
+    public LocalDate getNascimento() {
+        return nascimento;
     }
 
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
+    public Pessoa setNascimento(LocalDate nascimento) {
+        this.nascimento = nascimento;
+        return this;
     }
 
-    public LocalDate getDtNascimento() {
-        return dtNascimento;
+    public Set<Endereco> getEnderecos() {
+        return enderecos;
     }
 
-    public void setDtNascimento(LocalDate dtNascimento) {
-        this.dtNascimento = dtNascimento;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public String getSexo() {
-        return sexo;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pessoa pessoa)) return false;
+
+        return getId().equals(pessoa.getId());
     }
 
-    public String getParentesco() {
-        return parentesco;
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 
-    public void setParentesco(String parentesco) {
-        this.parentesco = parentesco;
+    @Override
+    public String toString() {
+        return "Pessoa{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", nascimento=" + nascimento +
+                '}';
     }
-
-    @OneToMany(mappedBy = "pessoa")
-    private Set<Endereco> enderecos = new HashSet<>();
-
 }
+
